@@ -36,36 +36,46 @@ app.get('/',function(req,res){
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.sendfile('index.html');
     });
-app.get('/users',function(req,res){
-    connection.query("call doUsers()",function(err,rows){
-        if(err)
-        {
-            console.log("Problem with MySQL"+err);
-        }
-        else
-        {
-            res.end(JSON.stringify(rows));
-            console.log(res);
-        }
-    });
-});
+// app.get('/users',function(req,res){
+//     connection.query("call doUsers('"+req.body.email+"','"+req.body.password+"')",function(err,rows){
+//         if(err)
+//         {
+//             console.log("Problem with MySQL"+err);
+//         }
+//         else
+//         {
+//             res.end(JSON.stringify(rows));
+//             console.log(res);
+//         }
+//     });
+// });
+// app.get('/detailsGet',function(req,res){
+//     connection.query("select * from details",function(err,JSON.stringify(rows){
+//         if(err)
+//         {
+//             console.log("Problem with MySQL"+err);
+//         }
+//         else
+//         {
+//             res.end(JSON.stringify(rows));
+//             console.log(res);
+//         }
+//     });
+// });
 
- app.post('/details', function(req, res, next) {
-    console.log(req.body.email);
-    console.log(req.body.password);
-    let origin = req.headers.origin;
-    console.log(origin)
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    var sql = "INSERT INTO `details`(`email`, `password`) VALUES ('"+req.body.email+"','"+req.body.password+"')";
+
+ app.post('/users', function(req, res, next) {
+   
+    var sql = "call getUsers('"+req.body.email+"','"+req.body.password+"')";
     connection.query(sql, function(err, result)  {
         if(err) {
             console.log("Problem with MySQL"+err);
         }else{
+
             res.end(JSON.stringify(result));
-            console.log(result);
-            console.log("table created");
+            console.log(res);
         }
-        });
+    });
 });
  
 
