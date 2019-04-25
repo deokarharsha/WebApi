@@ -38,24 +38,63 @@ connection.connect(function(error){
 /*Start the Server*/
 app.get('/',function(req,res){
     let origin = req.headers.origin;
-    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.sendfile('index.html');
-    });
-app.get('/users',function(req,res){
-    var sql = "select * from users";
-    connection.query(sql,function(err,rows){
-        if(err)
-        {
-            console.log("Problem with MySQL"+err);
-        }
-        else
-        {
-            res.send(JSON.stringify(rows));
-        }
-    });
 });
-app.post('/users', function(req, res, next) {
-    var sql = "call doUsers('"+req.body.email+"','"+req.body.password+"')";
+// app.get('/users',function(req,res){
+//     var sql = "select * from users";
+//     connection.query(sql,function(err,rows){
+//         if(err)
+//         {
+//             console.log("Problem with MySQL"+err);
+//         }
+//         else
+//         {
+//             res.send(JSON.stringify(rows));
+//         }
+//     });
+// });
+// app.post('/users', function(req, res, next) {
+//     var sql = "call doUsers('"+req.body.email+"','"+req.body.password+"')";
+//     connection.query(sql, function(err, result)  {
+//         let data = [];
+//         if(err){
+//             console.log("Problem with MySQL"+err);
+//         }else{
+//             if(result[0]){
+//                 data = JSON.stringify(result[0]);
+//             }
+//             res.send(data);
+//         }
+//     });
+// });
+// app.post('/user', function(req, res, next) {
+//     var sql = "INSERT INTO `users` (name,email, password,isAdmin) VALUES ('"+req.body.name+"','"+req.body.email+"', MD5('"+req.body.password+"'),"+req.body.isAdmin+")";
+//     connection.query(sql, function(err, result)  {
+//         if(err){
+//             console.log("Problem with MySQL"+err);
+//         }else{
+//             res.send(JSON.stringify(result));
+//         }
+//     });
+// });
+// app.post('/user1', function(req, res, next) {
+//     // console.log(req.body);
+//     var sql = "update `users` set name ='"+req.body.name+"', email = '"+req.body.email+"', password = MD5('"+req.body.password+"'), isAdmin = "+req.body.isAdmin+" where id = '"+req.body.id+"' ";
+//     console.log(sql);
+//     connection.query(sql, function(err, result)  {
+//         if(err){
+//             console.log("Problem with MySQL"+err);
+//         }else{
+//             res.send(JSON.stringify(result));
+//         }
+//     });
+// });
+
+
+app.post('/user12', function(req, res, next) {
+    // console.log(req.body);
+    var sql = "call masterUsers('"+req.body.id+"','"+req.body.name+"','"+req.body.email+"','"+req.body.password+"',"+req.body.isAdmin+",'"+req.body.action+"')";
     connection.query(sql, function(err, result)  {
         let data = [];
         if(err){
@@ -68,29 +107,6 @@ app.post('/users', function(req, res, next) {
         }
     });
 });
-app.post('/user', function(req, res, next) {
-    var sql = "INSERT INTO `users` (name,email, password,isAdmin) VALUES ('"+req.body.name+"','"+req.body.email+"', MD5('"+req.body.password+"'),"+req.body.isAdmin+")";
-    connection.query(sql, function(err, result)  {
-        if(err){
-            console.log("Problem with MySQL"+err);
-        }else{
-            res.send(JSON.stringify(result));
-        }
-    });
-});
-app.post('/user1', function(req, res, next) {
-    console.log(req.body);
-    var sql = "update `users` set name ='"+req.body.name+"', email = '"+req.body.email+"', password = MD5('"+req.body.password+"'), isAdmin = "+req.body.isAdmin+" where id = '"+req.body.id+"' ";
-    console.log(sql);
-    connection.query(sql, function(err, result)  {
-        if(err){
-            console.log("Problem with MySQL"+err);
-        }else{
-            res.send(JSON.stringify(result));
-        }
-    });
-});
-
 
 app.listen(3000,function(){
     console.log("It's Started on PORT 3000");
